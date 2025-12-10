@@ -1,11 +1,14 @@
 -- ==========================================
--- USERS (com riot_id, epic_id e fifa_id)
+-- DROP (para reinicializar em Docker)
 -- ==========================================
 DROP TABLE IF EXISTS user_tournament;
 DROP TABLE IF EXISTS tournaments;
 DROP TABLE IF EXISTS games;
 DROP TABLE IF EXISTS users;
 
+-- ==========================================
+-- USERS
+-- ==========================================
 CREATE TABLE users (
     user_id       SERIAL PRIMARY KEY,
     first_name    VARCHAR(100),
@@ -14,24 +17,21 @@ CREATE TABLE users (
     password_hash VARCHAR(250) NOT NULL,
     username      VARCHAR(50) UNIQUE NOT NULL,
 
-    -- IDs opcionais para cada jogo
+    -- IDs opcionales por juego
     riot_id       VARCHAR(50),
     epic_id       VARCHAR(50),
     fifa_id       VARCHAR(50)
 );
 
 -- ==========================================
--- GAMES
+-- GAMES (SEM max_players)
 -- ==========================================
 CREATE TABLE games (
     game_id        SERIAL PRIMARY KEY,
     game_name      VARCHAR(100) NOT NULL,
-    max_players    INT,
     img_banner     TEXT,
     img_card       TEXT,
     description    TEXT,
-
-    -- NOVO CAMPO
     associated_id  VARCHAR(50)
 );
 
