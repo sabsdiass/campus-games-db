@@ -1,24 +1,43 @@
--- 1) USERS
+-- ==========================================
+-- USERS (com riot_id, epic_id e fifa_id)
+-- ==========================================
+DROP TABLE IF EXISTS user_tournament;
+DROP TABLE IF EXISTS tournaments;
+DROP TABLE IF EXISTS games;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
     user_id       SERIAL PRIMARY KEY,
     first_name    VARCHAR(100),
     last_name     VARCHAR(100),
     email         VARCHAR(250) UNIQUE NOT NULL,
     password_hash VARCHAR(250) NOT NULL,
-    username      VARCHAR(50)  UNIQUE NOT NULL
+    username      VARCHAR(50) UNIQUE NOT NULL,
+
+    -- IDs opcionais para cada jogo
+    riot_id       VARCHAR(50),
+    epic_id       VARCHAR(50),
+    fifa_id       VARCHAR(50)
 );
 
--- 2) GAMES
+-- ==========================================
+-- GAMES
+-- ==========================================
 CREATE TABLE games (
-    game_id     SERIAL PRIMARY KEY,
-    game_name   VARCHAR(100) NOT NULL,
-    max_players INT,
-    img_banner  TEXT,
-    img_card    TEXT,
-    description TEXT
+    game_id        SERIAL PRIMARY KEY,
+    game_name      VARCHAR(100) NOT NULL,
+    max_players    INT,
+    img_banner     TEXT,
+    img_card       TEXT,
+    description    TEXT,
+
+    -- NOVO CAMPO
+    associated_id  VARCHAR(50)
 );
 
--- 3) TOURNAMENTS
+-- ==========================================
+-- TOURNAMENTS
+-- ==========================================
 CREATE TABLE tournaments (
     tournament_id          SERIAL PRIMARY KEY,
     game_id                INT REFERENCES games(game_id),
@@ -29,16 +48,11 @@ CREATE TABLE tournaments (
     platform               VARCHAR(100)
 );
 
--- 4) USER_TOURNAMENT
+-- ==========================================
+-- USER_TOURNAMENT
+-- ==========================================
 CREATE TABLE user_tournament (
     user_id       INT REFERENCES users(user_id),
     tournament_id INT REFERENCES tournaments(tournament_id),
     PRIMARY KEY (user_id, tournament_id)
-);
-
--- 5) USER_PLATFORM
-CREATE TABLE user_platform (
-    user_id     INT REFERENCES users(user_id),
-    platform_id VARCHAR(100),
-    PRIMARY KEY (platform_id)
 );
